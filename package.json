@@ -1,5 +1,5 @@
 {
-  "name": "mw-to-git",
+  "name": "wiki-to-git",
   "version": "0.0.1",
   "description": "Import Mediwiki page history to a local Git repository.",
   "type": "module",
