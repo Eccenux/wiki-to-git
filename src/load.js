@@ -13,3 +13,6 @@ const loader = new LoadData(site);
 loader.history = [];
 await loader.readHistory();
 loader.info();
+
+// test rev save
+await loader.poc();
