@@ -5,15 +5,18 @@ import fsa from 'fs/promises';
 /**
  * Download page history from a Mediawiki site.
  */
-class LoadData {
+export class LoadData {
 	/**
 	 * Init.
 	 * @param {String} site Domain of the Wiki. 
 	 * @param {String} page Page/Article (with namespace).
 	 */
 	constructor(site, page) {
+		/** Base, output directory. */
+		this.baseDir = '../repo/';
 		/** Initial URL. */
-		this.url = `https://${site}/w/rest.php/v1/page/${page}/history`;		;
+		this.origin = `https://${site}`;		;
+		this.url = `${this.origin}/w/rest.php/v1/page/${page}/history`;		;
 		/** Page history. */
 		this.history = [];
 	}
@@ -80,11 +83,11 @@ class LoadData {
 	 * @returns Revision data.
 	 */
 	async loadRev(id) {
-		let url = `https://${site}/w/rest.php/v1/revision/${id}`;
+		let url = `${this.origin}/w/rest.php/v1/revision/${id}`;
 		const response = await fetch(url);
 		const data = await response.json();
 
-		console.log(data.timestamp, data.page.title, data.user.name);
+		console.log('loadRev: ', data.timestamp, data.page.title, data.user.name);
 
 		return data.source;
 	}
@@ -100,6 +103,7 @@ class LoadData {
 	async saveRev(id, dstFile) {
 		// const data = await fsa.readFile(srcJs, 'utf8');
 		const data = await this.loadRev(id);
+		console.log('saveRev (%d): %s', data?.length || 0, dstFile);
 		await fsa.writeFile(dstFile, data);
 		return data;
 	}
@@ -115,7 +119,7 @@ class LoadData {
 	async poc() {
 		const first = this.history[this.history.length - 1];
 		const last = this.history[0];
-		const dir = 'repo/';
+		const dir = this.baseDir;
 		if (!fs.existsSync(dir)){
 			fs.mkdirSync(dir);
 		}
@@ -125,9 +129,3 @@ class LoadData {
 		]);
 	}
 }
-
-const site = 'en.wikipedia.org';
-const page = 'Agapanthus';
-const loader = new LoadData(site, page);
-await loader.load();
-loader.info();
