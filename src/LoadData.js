@@ -19,21 +19,43 @@ export class LoadData {
 		this.origin = `https://${site}`;		;
 		/** Page history. */
 		this.history = [];
+		/** Debug mode. */
+		this.debug = false;
 	}
 
 	/**
 	 * Load history entries.
      * 
 	 * @param {String} page Page/Article (with namespace).
+	 * @param {Object} userOptions Limits.
 	 */
-	async load(page) {
-		let url = `${this.origin}/w/rest.php/v1/page/${page}/history`;
+	async load(page, userOptions) {
+		let options = {
+			pages: -1,	// no. pages (default - no limit) 
+			changes: -1, 	// no. changes (default - no limit)
+		};
+		Object.assign(options, userOptions);
+		
+		let url = `${this.origin}/w/rest.php/v1/page/${encodeURIComponent(page)}/history`;
+		let count = 0;
 		do {
 			const response = await fetch(url);
 			url = await this.loadPage(response);
+
+			// page limit
+			if (options.pages > 0) {
+				count++;
+				if (count >= options.pages) {
+					break;
+				}
+			}
+			// changes limit
+			if (options.changes > 0) {
+				if (this.history.length >= options.changes) {
+					break;
+				}
+			}
 		} while (url)
-		// await this.poc();
-		await this.saveHistory();
 	}
 
 	/** History info. */
@@ -60,8 +82,16 @@ export class LoadData {
 	async loadPage(response) {
 		const data = await response.json();
 
-		console.log(data.revisions.length, data.older);
-		for (const revision of data.revisions) {
+		// empty
+		if (!data?.revisions?.length) {
+			console.warn('no data', data);
+			return false;
+		}
+
+		if (this.debug)
+			console.log(data.revisions.length, data.older);
+
+		for (const revision of data?.revisions) {
 			const entry = {
 				dt: revision.timestamp,
 				author: revision.user.name,
@@ -69,7 +99,8 @@ export class LoadData {
 				message: revision.comment,
 			};
 			this.history.push(entry);
-			console.log(entry);
+			if (this.debug)
+				console.log(entry);
 		}
 
 		return data.older;
@@ -90,7 +121,8 @@ export class LoadData {
 		const response = await fetch(url);
 		const data = await response.json();
 
-		console.log('loadRev: ', data.timestamp, data.page.title, data.user.name);
+		if (this.debug)
+			console.log('loadRev: ', data.timestamp, data.page.title, data.user.name);
 
 		return data.source;
 	}
@@ -105,7 +137,8 @@ export class LoadData {
 	 */
 	async saveRev(id, dstFile) {
 		const data = await this.loadRev(id);
-		console.log('saveRev (%d): %s', data?.length || 0, dstFile);
+		if (this.debug)
+			console.log('saveRev (%d): %s', data?.length || 0, dstFile);
 		await fsa.writeFile(dstFile, data);
 		return data;
 	}
@@ -142,7 +175,6 @@ export class LoadData {
 
 	/**
 	 * Save history as a file.
-	 * @private
 	 */
 	async saveHistory() {
 		this.prepareDir();

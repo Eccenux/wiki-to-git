@@ -8,7 +8,9 @@
     "node-fetch": "3.x"
   },
   "devDependencies": {
-    "eslint": "8.x"
+    "chai": "4.x",
+    "eslint": "8.x",
+    "mocha": "10.x"
   },
   "scripts": {
     "test": "mocha"

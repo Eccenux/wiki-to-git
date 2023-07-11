@@ -7,6 +7,7 @@ const site = 'en.wikipedia.org';
 const page = 'Agapanthus';
 const loader = new LoadData(site);
 // await loader.load(page);
+// await loader.saveHistory();
 // loader.info();
 
 // read from JSON
