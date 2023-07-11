@@ -5,6 +5,11 @@ import { LoadData } from './LoadData.js';
  */
 const site = 'en.wikipedia.org';
 const page = 'Agapanthus';
-const loader = new LoadData(site, page);
-await loader.load();
+const loader = new LoadData(site);
+// await loader.load(page);
+// loader.info();
+
+// read from JSON
+loader.history = [];
+await loader.readHistory();
 loader.info();
