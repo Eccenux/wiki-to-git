@@ -1,0 +1,21 @@
+{
+  "name": "mw-to-git",
+  "version": "0.0.1",
+  "description": "Import Mediwiki page history to a local Git repository.",
+  "type": "module",
+  "main": "main.js",
+  "dependencies": {
+    "node-fetch": "3.x"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [
+    "mediawiki",
+    "wikipedia",
+    "git"
+  ],
+  "author": "Maciej Nux",
+  "license": "MIT"
+}
