@@ -1,3 +1,4 @@
+import GitOps from './GitOps.js';
 import { LoadData } from './LoadData.js';
 
 /**
@@ -17,3 +18,7 @@ loader.info();
 
 // test rev save
 // await loader.poc();
+
+console.log('\n\nCreating Git repo.')
+const git = new GitOps('./repo', 'temp-git');
+await git.create();
