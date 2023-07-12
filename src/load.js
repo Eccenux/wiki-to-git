@@ -3,8 +3,8 @@ import { LoadData } from './LoadData.js';
 /**
  * Download page history from a Mediawiki site.
  */
-const site = 'en.wikipedia.org';
-const page = 'Agapanthus';
+const site = 'pl.wikipedia.org';
+const page = 'MediaWiki:Gadget-gConfig.js';
 const loader = new LoadData(site);
 // await loader.load(page);
 // await loader.saveHistory();
@@ -16,4 +16,4 @@ await loader.readHistory();
 loader.info();
 
 // test rev save
-await loader.poc();
+// await loader.poc();
