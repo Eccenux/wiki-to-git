@@ -1,6 +1,6 @@
 {
   "name": "wiki-to-git",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Import Mediwiki page history to a local Git repository.",
   "type": "module",
   "main": "main.js",

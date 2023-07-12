@@ -1,6 +1,7 @@
 import fetch from 'node-fetch';
 import fs from 'fs';
 import fsa from 'fs/promises';
+import HistoryEntry from './HistoryEntry.js';
 
 /**
  * Download page history from a Mediawiki site.
@@ -17,7 +18,10 @@ export class LoadData {
 		this.historyFile = 'history.json';
 		/** Initial URL. */
 		this.origin = `https://${site}`;		;
-		/** Page history. */
+		/**
+		 * Page history.
+		 * @type {HistoryEntry[]}
+		 */
 		this.history = [];
 		/** Debug mode. */
 		this.debug = false;
@@ -92,12 +96,7 @@ export class LoadData {
 			console.log(data.revisions.length, data.older);
 
 		for (const revision of data?.revisions) {
-			const entry = {
-				dt: revision.timestamp,
-				author: revision.user.name,
-				id: revision.id,
-				message: revision.comment,
-			};
+			const entry = new HistoryEntry(revision);
 			this.history.push(entry);
 			if (this.debug)
 				console.log(entry);
