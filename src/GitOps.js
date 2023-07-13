@@ -67,8 +67,8 @@ export default class GitOps {
 		// --date='<ISO date>' 
 		const args = ['commit'];
 		args.push('-m'); args.push(history.message);
-		args.push('--author='); args.push(history.author);
-		args.push('--date='); args.push(history.dt);
+		args.push(this.pAuthor(history));
+		args.push(this.pDate(history));
 		const result = await this.execFile('git', args, this.dir);
 		if (!result) {
 			throw 'Unable to commit changes!';
@@ -79,8 +79,14 @@ export default class GitOps {
 	/** @private Author param. */
 	pAuthor(history) {
 		// git commit ... --author="Some Author Name <Some-Author-Name@fake.wikipedia.org>"
+		
+		// base string
 		let name = history.author.toString().trim();
+		// remove special characters
+		name = name.replace(/[-="'@<>+]/g, ' ');
+		// mail-name
 		let mail = name.replace(/\s/g, '-');
+		// final
 		let arg = `--author="${name} <${mail}@${this.fakeDomain}>"`;
 		return arg;
 	}

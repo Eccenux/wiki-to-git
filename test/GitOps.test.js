@@ -33,6 +33,22 @@ describe('GitOps', function () {
 			let expected = `--author="${user} <Some-Author-Name@${fakeDomain}>"`;
 			assert.equal(result, expected);
 		});
+		it('should remove special', function () {
+			let expected = `--author="Some Name <Some-Name@${fakeDomain}>"`;
+			let variants = [
+				`Some'Name`,
+				`Some@Name`,
+				`Some"Name`,
+				`Some<Name`,
+				`Some>Name`,
+				`Some+Name`,
+			];
+			for (const user of variants) {
+				let history = createEntry(user);
+				let result = git.pAuthor(history);
+				assert.equal(result, expected);
+			}
+		});
 	});
 
 	describe('pDate', function () {
