@@ -19,6 +19,8 @@ export default class GitOps {
 		this.fakeDomain = 'fake.wikipedia.org';
 		/** Default branch. */
 		this.branch = 'main';
+		/** Default message (when empty). */
+		this.emptyMessage = '-';
 	}
 
 	set baseDir(dir) {
@@ -69,7 +71,7 @@ export default class GitOps {
 		// --author="Some Author Name <Some-Author-Name@fake.wikipedia.org>"
 		// --date='<ISO date>' 
 		const args = ['commit'];
-		args.push('-m'); args.push(history.message);
+		args.push('-m'); args.push(this.pMessage(history));
 		args.push(this.pAuthor(history));
 		args.push(this.pDate(history));
 		let env = {};
@@ -81,6 +83,14 @@ export default class GitOps {
 		return result;
 	}
 
+	/** @private Date param. */
+	pMessage(history) {
+		let message = history.message.toString().trim();
+		if (!message.length) {
+			message = this.emptyMessage;
+		}
+		return message;
+	}
 	/** @private Author param. */
 	pAuthor(history) {
 		// git commit ... --author="Some Author Name <Some-Author-Name@fake.wikipedia.org>"
