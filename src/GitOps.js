@@ -14,6 +14,8 @@ export default class GitOps {
 		this.baseDir = baseDir;
 		/** Repository directory. */
 		this.repoName = repoName;
+		/** Fake domain for e-mails. */
+		this.fakeDomain = 'fake.wikipedia.org';
 	}
 
 	set baseDir(dir) {
@@ -59,8 +61,10 @@ export default class GitOps {
 	 * @param {HistoryEntry} history 
 	 */
 	async commit(history) {
-		// git commit -m "Description from history" --author="Matma Rex <Matma-Rex@fake.wikipedia.org>"
-		// --date=<date> 
+		// git commit 
+		// -m "Description from history"
+		// --author="Some Author Name <Some-Author-Name@fake.wikipedia.org>"
+		// --date='<ISO date>' 
 		const args = ['commit'];
 		args.push('-m'); args.push(history.message);
 		args.push('--author='); args.push(history.author);
@@ -70,6 +74,20 @@ export default class GitOps {
 			throw 'Unable to commit changes!';
 		}
 		return result;
+	}
+
+	/** @private Author param. */
+	pAuthor(history) {
+		// git commit ... --author="Some Author Name <Some-Author-Name@fake.wikipedia.org>"
+		let name = history.author.toString().trim();
+		let mail = name.replace(/\s/g, '-');
+		let arg = `--author="${name} <${mail}@${this.fakeDomain}>"`;
+		return arg;
+	}
+	/** @private Date param. */
+	pDate(history) {
+		// git commit ... --date='<ISO 8601>'
+		args.push('--date='); args.push(history.dt);
 	}
 
 	/** @private Execute and report problems (unsafe!). */
