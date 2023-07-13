@@ -34,5 +34,21 @@ describe('GitOps', function () {
 			assert.equal(result, expected);
 		});
 	});
+
+	describe('pDate', function () {
+		const git = new GitOps('./repo', 'test-repo');
+		function createEntry(dt) {
+			const history = {dt: dt, author: 'Johnny', id: 123, message: 'v1.2.3'};
+			return history;
+		}
+
+		it('should format param', function () {
+			let dt = '2023-01-22T19:52:05Z';
+			let history = createEntry(dt);
+			let result = git.pDate(history);
+			let expected = `--date='${dt}'`;
+			assert.equal(result, expected);
+		});
+	});
 });
 // assert.isTrue(loader.history.length > 50);

@@ -87,7 +87,9 @@ export default class GitOps {
 	/** @private Date param. */
 	pDate(history) {
 		// git commit ... --date='<ISO 8601>'
-		args.push('--date='); args.push(history.dt);
+		let dt = history.dt.toString().trim();
+		let arg = `--date='${dt}'`;
+		return arg;
 	}
 
 	/** @private Execute and report problems (unsafe!). */
