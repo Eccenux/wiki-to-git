@@ -1,9 +1,10 @@
-wiki2git
+Wiki to Git
 ==========================
+<img align="right" width="150" height="150" src="https://raw.githubusercontent.com/Eccenux/wiki-to-git/main/assets/wiki-to-git-logo.svg">
 
-Wiki2git is a tool that import Mediwiki page history to a local Git repository.
+**Wiki To Git** is a tool that helps to import Mediwiki page history to a Git repository.
 
-So this can be used to export things like a Wikipedia gadget (or user script) to e.g. Github (or Gitlab or some other Git server).
+So this can be used to export things like a Wikipedia gadget (or a user script) to some Git server (e.g. Github or Gitlab or Gitea). The history of the Git repo will preserve authors and original messages (original description of changes).
 
 ## Basic steps
 
