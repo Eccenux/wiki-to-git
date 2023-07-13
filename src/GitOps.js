@@ -70,7 +70,9 @@ export default class GitOps {
 		args.push('-m'); args.push(history.message);
 		args.push(this.pAuthor(history));
 		args.push(this.pDate(history));
-		const result = await this.execFile('git', args, this.dir);
+		let env = {};
+		env.GIT_COMMITTER_DATE = history.dt.toString().trim();
+		const result = await this.execFile('git', args, this.dir, env);
 		if (!result) {
 			throw 'Unable to commit changes!';
 		}
@@ -118,8 +120,8 @@ export default class GitOps {
 	}
 
 	/** @private Execute and report problems. */
-	async execFile(cmd, args, dir) {
-		const { stdout, stderr } = await execFile(cmd, args, {cwd: dir});
+	async execFile(cmd, args, dir, env) {
+		const { stdout, stderr } = await execFile(cmd, args, {cwd: dir, env: env});
 		return this.execInfo(stdout, stderr);
 	}
 }
