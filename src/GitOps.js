@@ -17,6 +17,8 @@ export default class GitOps {
 		this.repoName = repoName;
 		/** Fake domain for e-mails. */
 		this.fakeDomain = 'fake.wikipedia.org';
+		/** Default branch. */
+		this.branch = 'main';
 	}
 
 	set baseDir(dir) {
@@ -41,7 +43,7 @@ export default class GitOps {
 
 	/** Create repo. */
 	async create() {
-		const result = await this.exec(`git init ${this.repoName}`, this.baseDir);
+		const result = await this.exec(`git init ${this.repoName} -b ${this.branch}`, this.baseDir);
 		if (!result) {
 			throw 'Unable to create repo!';
 		}
