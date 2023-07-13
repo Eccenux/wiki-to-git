@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import HistoryEntry from './HistoryEntry.js';
 import util from 'util';
 import { exec as execClassic, execFile as execFileC } from 'child_process';

@@ -18,7 +18,7 @@ export class LoadData {
 		/** History file. */
 		this.historyFile = 'history.json';
 		/** Initial URL. */
-		this.origin = `https://${site}`;		;
+		this.origin = `https://${site}`;
 		/**
 		 * Page history.
 		 * @type {HistoryEntry[]}
@@ -96,7 +96,7 @@ export class LoadData {
 		if (this.debug)
 			console.log(data.revisions.length, data.older);
 
-		for (const revision of data?.revisions) {
+		for (const revision of data.revisions) {
 			const entry = new HistoryEntry(revision);
 			this.history.push(entry);
 			if (this.debug)
@@ -233,7 +233,7 @@ export class LoadData {
 		return data;
 	}
 
-    /**
+	/**
 	 * Read history from a file.
 	 */
 	async readHistory() {
