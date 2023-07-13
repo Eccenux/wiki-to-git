@@ -11,7 +11,9 @@ const loader = new LoadData(site);
 // await loader.saveHistory();
 // loader.info();
 
-// read from JSON
+/**
+ * Read page history from JSON.
+ */
 loader.history = [];
 await loader.readHistory();
 loader.info();
@@ -19,6 +21,12 @@ loader.info();
 // test rev save
 // await loader.poc();
 
-console.log('\n\nCreating Git repo.')
-const git = new GitOps('./repo', 'temp-git');
-await git.create();
+/**
+ * Create Git repo.
+ */
+const repoName = 'wiki-gConfig';
+const filename = 'gConfig.js';
+console.log('\n\nCreating Git repo (%s).', repoName);
+loader.repoCreate(repoName);
+console.log('\nSave history as %s.', filename);
+loader.repoCommit(repoName, filename);

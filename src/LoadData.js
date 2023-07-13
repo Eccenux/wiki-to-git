@@ -2,6 +2,7 @@ import fetch from 'node-fetch';
 import fs from 'fs';
 import fsa from 'fs/promises';
 import HistoryEntry from './HistoryEntry.js';
+import GitOps from './GitOps.js';
 
 /**
  * Download page history from a Mediawiki site.
@@ -159,6 +160,43 @@ export class LoadData {
 			this.saveRev(first.id, dir + '1st.tex'),
 			this.saveRev(last.id, dir + 'last.tex'),
 		]);
+	}
+
+	/**
+	 * Init repo.
+	 * 
+	 * Skip this if repo already exists 
+	 * and you are just creating a history of a new file.
+	 */
+	async repoCreate(repoName) {
+		if (!this.history.length) {
+			throw 'Load (or read) history first';
+		}
+		this.prepareDir();
+		const git = new GitOps(this.baseDir, repoName);
+		await git.create();
+	}
+
+	/**
+	 * Commit file history into the repo.
+	 * 
+	 * Load rev, save and commit.
+	 * This is separate from loading historyon purpose.
+	 * Use `saveHistory` after initial load and then `readHistory`.
+	 * You can manipulatedsaved JSON in between or merge two files as one.
+	 */
+	async repoCommit(repoName, filename) {
+		if (!this.history.length) {
+			throw 'Load (or read) history first';
+		}
+		const git = new GitOps(this.baseDir, repoName);
+
+		const dir = this.baseDir + repoName + '/';
+		for (const history of this.history) {
+			await this.saveRev(history.id, dir + filename);
+			await git.addAll();
+			await git.commit(history);
+		}
 	}
 
 	/**

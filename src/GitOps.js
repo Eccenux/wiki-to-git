@@ -20,6 +20,7 @@ export default class GitOps {
 		if (!result) {
 			throw 'Unable to create repo!';
 		}
+		return result;
 	}
 
 	/** Add all files (stage changes). */
