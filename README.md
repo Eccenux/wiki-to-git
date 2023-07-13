@@ -10,39 +10,76 @@ Once done you can start using external tools to edit and analyze history of the 
 
 ## Basic steps
 
-Step. 1. You can install it via npm:
+**Step. 1.** You can install it via npm:
 ```
 npm i wiki-to-git
 ```
 
-Step. 2. Create your export script (NodeJS script).
+**Step. 2.** Create your export script (Node.js script).
 
-Step. 3. Run your script.
+**Step. 3.** Run your script.
 
 That is it. You should check if the history of the git repo is OK and you can push it to your Git server (like e.g. Github).
 
-## Creating your script
+## Creating your script (step. 2)
 
 Your export script should use `wiki-to-git` to create a new git repo.
 
-TBC...
-
+Most of the time you will only need to change the top configuration from the snippet below.
 ```js
 import { LoadData } from 'wiki-to-git';
+
+//
+// Config.
+// change this values to your needs
+const site = 'en.wikipedia.org';
+const page = 'MediaWiki:Gadget-exampleGadgetScript.js';
+const repoName = 'wiki-exampleGadgetScript';
+const filename = 'exampleGadgetScript.js';
+
+const loader = new LoadData(site);
 
 /**
  * Download page history from a Mediawiki site.
  */
-const site = 'en.wikipedia.org';
-const page = 'MediaWiki:Gadget-exampleGadgetScript.js';
-const loader = new LoadData(site);
+console.log('\n\nDownload history for %s.', page);
 // this will load
 await loader.load(page);
 // this will save history as JSON
 await loader.saveHistory();
 // this just shows a quick info (you can skip this)
 loader.info();
+
+// You only need to read JSON if you changed it.
+// Use load (and saveHistory) xor readHistory.
+/**
+ * Read page history from JSON.
+ *
+loader.history = [];
+await loader.readHistory();
+loader.info();
+
+/**
+ * Create Git repo.
+ */
+console.log('\n\nCreating Git repo (%s).', repoName);
+loader.repoCreate(repoName);
+console.log('\nSave history as %s.', filename);
+loader.repoCommit(repoName, filename);
 ```
+
+That's it. Run this script in Node.js and you are done.
+
+## Troubleshooting
+
+If something goes wrong you might want remove the `.git` subdirectory 
+from the generated repo and try again.
+
+To check the details of the repo use this:
+```
+git log --pretty=fuller
+```
+This will show more details then typical log. Note that committer should be your Git account and the author should be an author from the Wiki page history.  
 
 ## External links
 * [Wiki2git on npm](https://www.npmjs.com/package/wiki-to-git)

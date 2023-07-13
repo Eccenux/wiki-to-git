@@ -1,9 +1,9 @@
 {
   "name": "wiki-to-git",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "description": "Node.js tool that helps to download Mediwiki page history and push it to a Git repository.",
   "type": "module",
-  "main": "main.js",
+  "main": "src/main.js",
   "dependencies": {
     "node-fetch": "3.x"
   },
