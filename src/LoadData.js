@@ -177,6 +177,15 @@ export class LoadData {
 		await git.create();
 	}
 
+	/** @private Sort history from oldest. */
+	sortHistory() {
+		this.history.sort((a, b) => {
+			let d_a = new Date(a.dt);
+			let d_b = new Date(b.dt);
+			return d_a.getTime() - d_b.getTime();
+		});
+	}
+
 	/**
 	 * Commit file history into the repo.
 	 * 
@@ -192,7 +201,9 @@ export class LoadData {
 		const git = new GitOps(this.baseDir, repoName);
 
 		const dir = this.baseDir + repoName + '/';
+		this.sortHistory();
 		for (const history of this.history) {
+			// console.log(history.dt);
 			await this.saveRev(history.id, dir + filename);
 			await git.addAll();
 			await git.commit(history);
