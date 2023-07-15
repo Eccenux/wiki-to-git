@@ -76,10 +76,22 @@ export default class GitOps {
 		args.push(this.pDate(history));
 		let env = {};
 		env.GIT_COMMITTER_DATE = history.dt.toString().trim();
-		const result = await this.execFile('git', args, this.dir, env);
-		if (!result) {
-			throw 'Unable to commit changes!';
+
+		let result;
+		try {
+			result = await this.execFile('git', args, this.dir, env);
+			if (!result) {
+				throw 'Unable to commit changes!';
+			}
+		} catch (error) {
+			if (error.code === 1 && error.stdout.search(/nothing to commit/) >= 0) {
+				console.log('\n\nskipping empty commit:\n', history);
+			} else {
+				this.execInfo(error.stdout, error.stderr);
+				throw(error);
+			}
 		}
+
 		return result;
 	}
 
@@ -120,7 +132,7 @@ export default class GitOps {
 	}
 
 	/** @private Report exec problems. */
-	async execInfo(stdout, stderr) {
+	execInfo(stdout, stderr) {
 		if (stdout && stdout.length) {
 			console.log(stdout);
 		}
