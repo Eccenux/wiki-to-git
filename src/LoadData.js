@@ -35,7 +35,7 @@ export class LoadData {
 	 * @param {Object} userOptions Limits.
 	 */
 	async load(page, userOptions) {
-		if (!this.history.length) {
+		if (!this.origin.length) {
 			throw 'You must set site (or origin) before trying to load.';
 		}
 		let options = {
@@ -68,7 +68,7 @@ export class LoadData {
 
 	/** History info. */
 	info() {
-		console.log('Data loaded:', this.history.length);
+		console.log('Revision count:', this.history.length);
 		const first = this.history[this.history.length - 1];
 		const last = this.history[0];
 		console.log('First edit:', first);
@@ -240,7 +240,7 @@ export class LoadData {
 	/**
 	 * Save history as a file.
 	 */
-	async saveHistory(historyFile='') {
+	async saveHistory(historyFile='', info=false) {
 		if (!historyFile.length) {
 			historyFile = this.historyFile;
 		}
@@ -249,6 +249,9 @@ export class LoadData {
 		const dstFile = dir + historyFile;
 		const data = JSON.stringify(this.history, null, '\t');
 		await fsa.writeFile(dstFile, data);
+		if (info) {
+			console.log('Saved history data to:', historyFile);
+		}
 		return data;
 	}
 

@@ -5,6 +5,7 @@
   "type": "module",
   "main": "src/main.js",
   "dependencies": {
+    "commander": "^11.1.0",
     "node-fetch": "3.x"
   },
   "devDependencies": {
@@ -14,6 +15,10 @@
   },
   "scripts": {
     "test": "mocha"
+  },
+  "bin": {
+    "wiki2git-load": "./src/cmd-load-cmd.js",
+    "wiki2git-commit": "./src/cmd-commit-cmd.js"
   },
   "keywords": [
     "mediawiki",
