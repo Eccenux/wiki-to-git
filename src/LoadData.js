@@ -12,13 +12,13 @@ export class LoadData {
 	 * Init.
 	 * @param {String} site Domain of the Wiki. 
 	 */
-	constructor(site) {
+	constructor(site='') {
 		/** Base, output directory. */
 		this.baseDir = 'repo/';
 		/** History file. */
 		this.historyFile = 'history.json';
 		/** Initial URL. */
-		this.origin = `https://${site}`;
+		this.origin = !site.length ? '' : `https://${site}`;
 		/**
 		 * Page history.
 		 * @type {HistoryEntry[]}
@@ -35,6 +35,9 @@ export class LoadData {
 	 * @param {Object} userOptions Limits.
 	 */
 	async load(page, userOptions) {
+		if (!this.history.length) {
+			throw 'You must set site (or origin) before trying to load.';
+		}
 		let options = {
 			pages: -1,	// no. pages (default - no limit) 
 			changes: -1, 	// no. changes (default - no limit)
@@ -172,6 +175,9 @@ export class LoadData {
 		if (!this.history.length) {
 			throw 'Load (or read) history first';
 		}
+		if (this.isGitDir()) {
+			console('Already exists.');
+		}
 		this.prepareDir();
 		const git = new GitOps(this.baseDir, repoName);
 		await git.create();
@@ -220,14 +226,27 @@ export class LoadData {
 			fs.mkdirSync(dir);
 		}
 	}
+	/**
+	 * @private Is the base dir a git repo already?
+	 */
+	isGitDir() {
+		const dir = this.baseDir + '/.git';
+		if (fs.existsSync(dir)){
+			return true;
+		}
+		return false;
+	}
 
 	/**
 	 * Save history as a file.
 	 */
-	async saveHistory() {
+	async saveHistory(historyFile='') {
+		if (!historyFile.length) {
+			historyFile = this.historyFile;
+		}
 		this.prepareDir();
 		const dir = this.baseDir;
-		const dstFile = dir + this.historyFile;
+		const dstFile = dir + historyFile;
 		const data = JSON.stringify(this.history, null, '\t');
 		await fsa.writeFile(dstFile, data);
 		return data;
@@ -236,9 +255,12 @@ export class LoadData {
 	/**
 	 * Read history from a file.
 	 */
-	async readHistory() {
+	async readHistory(historyFile='') {
+		if (!historyFile.length) {
+			historyFile = this.historyFile;
+		}
 		const dir = this.baseDir;
-		const file = dir + this.historyFile;
+		const file = dir + historyFile;
 		const raw = await fsa.readFile(file, 'utf8');
 		this.history = JSON.parse(raw);
 		return this.history;
