@@ -48,7 +48,7 @@ npx wiki2git-commit --help
 
 Example:
 ```
-npx wiki2git-load --site meta.wikimedia.org -p "User:Nux/global.js"
+npx wiki2git-load --site meta.wikimedia.org -p "User:Nux/global.js" -l 3
 npx wiki2git-commit --site meta.wikimedia.org --repo "repo/global-test" -o "global.js"
 ```
 

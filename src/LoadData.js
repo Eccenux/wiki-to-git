@@ -54,7 +54,7 @@ export class LoadData {
 			const response = await fetch(url);
 			url = await this.loadPage(response);
 
-			// page limit
+			// page limit (batches limit)
 			if (options.pages > 0) {
 				count++;
 				if (count >= options.pages) {
@@ -64,6 +64,8 @@ export class LoadData {
 			// changes limit
 			if (options.changes > 0) {
 				if (this.history.length >= options.changes) {
+					let deleteCount = this.history.length - options.changes;
+					this.history.splice(-deleteCount, deleteCount);
 					break;
 				}
 			}
