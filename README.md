@@ -4,9 +4,9 @@ Wiki to Git
 
 **Wiki To Git** is a tool that helps to download MediaWiki page history and push it to a Git repository.
 
-You can used it to export things like a Wikipedia gadget to some Git server (e.g. GitHub or GitLab or Gitea). Or e.g. export your a user script to Git and work on it locally. The history of the Git repo will preserve authors and original messages (original description of changes). Essentially each edit becomes a commit.
+You can used it to export things like a Wikipedia gadget to some Git server (e.g. GitHub or GitLab or Gitea). Or just export your user script to Git and work on it locally. The history of the Git repo will preserve authors and original messages (original description of changes). Essentially each edit becomes a commit.
 
-Once done you can start using external tools to edit and analyze history of the gadget. You can use [Wikiploy](https://github.com/Eccenux/Wikiploy) to deploy your gadget back to Wikipedia. You can also test easier with things like [Mocha](https://mochajs.org/#installation)/[Chai](https://www.chaijs.com/api/assert/). You can also use build tools like [Browserify](https://browserify.org/) or [Webpack](https://webpack.js.org/). Wikiploy will also help in deploying dev/test versions.
+Once done, you can start using external tools to edit and analyze the history of the gadget. You can use [Wikiploy](https://github.com/Eccenux/Wikiploy) to deploy your gadget back to Wikipedia. Testing your code will also be easier with things like [Mocha](https://mochajs.org/#installation)/[Chai](https://www.chaijs.com/api/assert/). You can also use build tools like [Browserify](https://browserify.org/) or [Webpack](https://webpack.js.org/).
 
 ## Using tools
 
@@ -52,7 +52,7 @@ wiki2git-commit --site meta.wikimedia.org --repo "global-JS-CSS" -o "global.css"
 ## Creating a script (not using cmd)
 
 I recommend using cmd tools, but you can also use a Node script if you prefer.
-See [README-classes.md](README-classes.md)
+See [README-classes.md](README-classes.md) (on Github).
 
 ## Troubleshooting
 
