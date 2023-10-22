@@ -4,73 +4,65 @@ Wiki to Git
 
 **Wiki To Git** is a tool that helps to download MediaWiki page history and push it to a Git repository.
 
-So this can be used to export things like a Wikipedia gadget (or a user script) to some Git server (e.g. GitHub or GitLab or Gitea). The history of the Git repo will preserve authors and original messages (original description of changes). Essentially each edit becomes a commit.
+You can used it to export things like a Wikipedia gadget to some Git server (e.g. GitHub or GitLab or Gitea). Or e.g. export your a user script to Git and work on it locally. The history of the Git repo will preserve authors and original messages (original description of changes). Essentially each edit becomes a commit.
 
 Once done you can start using external tools to edit and analyze history of the gadget. You can use [Wikiploy](https://github.com/Eccenux/Wikiploy) to deploy your gadget back to Wikipedia. You can also test easier with things like [Mocha](https://mochajs.org/#installation)/[Chai](https://www.chaijs.com/api/assert/). You can also use build tools like [Browserify](https://browserify.org/) or [Webpack](https://webpack.js.org/). Wikiploy will also help in deploying dev/test versions.
 
-## Basic steps
+## Using tools
 
-**Step. 1.** You can install it via npm:
+### Basic steps
+
+**Step. 1.** Install tools via npm (Node.js):
+```bash
+npm i -g wiki-to-git
 ```
-npm i wiki-to-git
+
+**Step. 2.** Load history metadata from wiki (this will create a `history.json` file):
+```bash
+wiki2git-load --site meta.wikimedia.org -p "User:Nux/global.js"
 ```
 
-**Step. 2.** Create your export script (Node.js script).
+To see more options use:
+```bash
+wiki2git-load --help
+```
 
-**Step. 3.** Run your script.
+**Step. 3.** Commit to a new or existing repo:
+```bash
+wiki2git-commit --site meta.wikimedia.org --repo "global-JS-CSS" -o "global.js"
+```
+
+This will automatically:
+1. Create a "global-JS-CSS" repositry.
+2. Download revisions from the site.
+3. Create a file `global-JS-CSS/global.js`.
 
 That is it. You should check if the history of the git repo is OK and you can push it to your Git server (like e.g. Github).
 
-## Creating your script (step. 2)
+### More files
 
-Your export script should use `wiki-to-git` to create a new git repo.
+If you want to download more files, just run similar steps again. The repository will be detected, and commits will be added for the new file.
 
-Most of the time you will only need to change the top configuration from the snippet below.
-```js
-import { LoadData } from 'wiki-to-git';
-
-//
-// Config.
-// change this values to your needs
-const site = 'en.wikipedia.org';
-const page = 'MediaWiki:Gadget-exampleGadgetScript.js';
-const repoName = 'wiki-exampleGadgetScript';
-const filename = 'exampleGadgetScript.js';
-
-const loader = new LoadData(site);
-
-/**
- * Download page history from a MediaWiki site.
- */
-console.log('\n\nDownload history for %s.', page);
-// this will load
-await loader.load(page);
-// this will save history as JSON
-await loader.saveHistory();
-// this just shows a quick info (you can skip this)
-loader.info();
-
-// You only need to read JSON if you changed it.
-// Use load (and saveHistory) xor readHistory.
-/**
- * Read page history from JSON.
- *
-loader.history = [];
-await loader.readHistory();
-loader.info();
-
-/**
- * Create Git repo.
- */
-console.log('\n\nCreating Git repo (%s).', repoName);
-loader.repoCreate(repoName);
-console.log('\nSave history as %s.', filename);
-loader.repoCommit(repoName, filename);
+For example you might want to add CSS:
+```bash
+wiki2git-load --site meta.wikimedia.org -p "User:Nux/global.css"
+wiki2git-commit --site meta.wikimedia.org --repo "global-JS-CSS" -o "global.css"
 ```
 
-That's it. Run this script in Node.js and you are done.
+## Creating a script (not using cmd)
+
+I recommend using cmd tools, but you can also use a Node script if you prefer.
+See [README-classes.md](README-classes.md)
 
 ## Troubleshooting
+
+### Supported Node versions
+
+You'll need [Node.js](https://nodejs.org/en) for this tool and your safest choice is the latest LTS version.
+
+Wiki2git 1.1 has been successfully tested with Node versions 14, 16, 18, and 20.
+
+### Review git history
 
 If something goes wrong you might want remove the `.git` subdirectory 
 from the generated repo and try again.
