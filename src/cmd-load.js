@@ -8,6 +8,7 @@ import { LoadData } from './LoadData.js';
  */
 export async function runScript(site, page, historyFile) {
 	const loader = new LoadData(site);
+	loader.baseDir = './';
 
 	console.log('\n\nDownload history for %s.', page);
 	// this will load version history into internals
@@ -24,7 +25,7 @@ if (test) {
 	const { site, page, historyFile } = {
 		site: 'meta.wikimedia.org',
 		page: 'User:Nux/global.js',
-		historyFile: undefined
+		historyFile: 'repo/h-global.json',
 	}
-	runScript(site, page, historyFile);
+	await runScript(site, page, historyFile);
 }

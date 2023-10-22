@@ -6,6 +6,10 @@ import GitOps from './GitOps.js';
 
 /**
  * Download page history from a Mediawiki site.
+ * 
+ * Note! You will need `site` for both stages.
+ * Stage 1. Function `load` will download metadata.
+ * Stage 2. Function `repoCommit` will download revision contents.
  */
 export class LoadData {
 	/**
@@ -120,6 +124,9 @@ export class LoadData {
 	 * @returns Revision data.
 	 */
 	async loadRev(id) {
+		if (!this.origin.length) {
+			throw 'You must set site (or origin) to load revsion content.';
+		}
 		let url = `${this.origin}/w/rest.php/v1/revision/${id}`;
 		const response = await fetch(url);
 		const data = await response.json();
@@ -175,8 +182,9 @@ export class LoadData {
 		if (!this.history.length) {
 			throw 'Load (or read) history first';
 		}
-		if (this.isGitDir()) {
-			console('Already exists.');
+		if (this.isGitDir(repoName)) {
+			console.log('Already exists.');
+			return;
 		}
 		this.prepareDir();
 		const git = new GitOps(this.baseDir, repoName);
@@ -229,8 +237,8 @@ export class LoadData {
 	/**
 	 * @private Is the base dir a git repo already?
 	 */
-	isGitDir() {
-		const dir = this.baseDir + '/.git';
+	isGitDir(repoName) {
+		const dir = this.baseDir + repoName + '/.git';
 		if (fs.existsSync(dir)){
 			return true;
 		}

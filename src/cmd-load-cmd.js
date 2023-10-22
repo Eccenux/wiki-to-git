@@ -9,16 +9,16 @@ import { runScript } from 'cmd-load.js';
 const program = new Command();
 
 program
-	.description('Download page history from a MediaWiki site.')
+	.description('Download page history from a MediaWiki site. Loads metadata from a wiki site and save this to a history json.')
 	.requiredOption('-s, --site <site>', `MediaWiki site domain (e.g. 'en.wikipedia.org').`)
 	.requiredOption('-p, --page <page>', 'Page to download (title with namespace).')
-	.option('-f, --historyFile <file>', `Optional JSON file name for history data (default: 'history.json')`)
+	.option('-j, --json <fileName>', `Optional JSON file name for history data (default: 'history.json').`, '')
 	.parse(process.argv);
 
 const options = program.opts();
 
-const { site, page, historyFile } = options;
+const { site, page, json } = options;
 
-// console.log('temp', { site, page, historyFile });
+// console.log('temp', { site, page, json });
 
-runScript(site, page, historyFile);
+await runScript(site, page, json);
