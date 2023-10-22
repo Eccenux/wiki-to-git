@@ -4,7 +4,7 @@
  * Commit history JSON to a new git file.
  */
 import { Command } from 'commander';
-import { runScript } from './cmd-load.js';
+import { runScript } from './cmd-commit.js';
 
 const program = new Command();
 
