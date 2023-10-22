@@ -12,8 +12,9 @@ Preparation
 ----------------------
 
 ### Install Nodejs
-Obviously you'll need [Node.js](https://nodejs.org/en).
-Node 14+ should be fine for Wiki2git alone, deps might require a higher Node version. In any case, I would recommend using the latest LTS version of Node.
+You'll definitely need [Node.js](https://nodejs.org/en), and your safest choice is the latest LTS version.
+
+Wiki2git 1.1 has been successfully tested with Node versions 14, 16, 18, and 20.
 
 ### Install modules
 Run first `npm i`.
