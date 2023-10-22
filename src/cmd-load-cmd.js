@@ -4,7 +4,7 @@
  * Download page history from a MediaWiki site.
  */
 import { Command } from 'commander';
-import { runScript } from 'cmd-load.js';
+import { runScript } from './cmd-load.js';
 
 const program = new Command();
 
