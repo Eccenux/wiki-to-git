@@ -33,11 +33,11 @@ wiki2git-commit --site meta.wikimedia.org --repo "global-JS-CSS" -o "global.js"
 ```
 
 This will automatically:
-1. Create a "global-JS-CSS" repositry.
+1. Create a "global-JS-CSS" repository.
 2. Download revisions from the site.
 3. Create a file `global-JS-CSS/global.js`.
 
-That is it. You should check if the history of the git repo is OK and you can push it to your Git server (like e.g. Github).
+That is it. You should check if the history of the git repo is OK and you can push it to your Git server (like e.g. GitHub).
 
 ### More files
 
