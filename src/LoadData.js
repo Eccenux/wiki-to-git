@@ -151,6 +151,9 @@ export class LoadData {
 		const data = await this.loadRev(id);
 		if (this.debug)
 			console.log('saveRev (%d): %s', data?.length || 0, dstFile);
+		if (!data) {
+			return false;
+		}
 		await fsa.writeFile(dstFile, data);
 		return data;
 	}
@@ -220,7 +223,11 @@ export class LoadData {
 		this.sortHistory();
 		for (const history of this.history) {
 			// console.log(history.dt);
-			await this.saveRev(history.id, dir + filename);
+			let data = await this.saveRev(history.id, dir + filename);
+			if (data === false) {
+				console.warn('[WARNING] Revision %d (%s) is not available for »%s« (removed?). Skipping that revision.', history.id, history.dt, filename);
+				continue;
+			}
 			await git.addAll();
 			await git.commit(history);
 		}
@@ -274,8 +281,14 @@ export class LoadData {
 		}
 		const dir = this.baseDir;
 		const file = dir + historyFile;
-		const raw = await fsa.readFile(file, 'utf8');
-		this.history = JSON.parse(raw);
+		const rawJson = await fsa.readFile(file, 'utf8');
+		let rawArray = JSON.parse(rawJson);
+		let history = [];
+		for (const rev of rawArray) {
+			const entry = HistoryEntry.recreate(rev);
+			history.push(entry);
+		}
+		this.history = history;
 		return this.history;
 	}
 }

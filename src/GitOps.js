@@ -21,6 +21,7 @@ export default class GitOps {
 		this.branch = 'main';
 		/** Default message (when empty). */
 		this.emptyMessage = '-';
+		this.emptyAuthor = '~anon';
 	}
 
 	set baseDir(dir) {
@@ -75,7 +76,7 @@ export default class GitOps {
 		args.push(this.pAuthor(history));
 		args.push(this.pDate(history));
 		let env = {};
-		env.GIT_COMMITTER_DATE = history.dt.toString().trim();
+		env.GIT_COMMITTER_DATE = history.dt.trim();
 
 		let result;
 		try {
@@ -97,7 +98,7 @@ export default class GitOps {
 
 	/** @private Date param. */
 	pMessage(history) {
-		let message = history.message.toString().trim();
+		let message = history.message.trim();
 		if (!message.length) {
 			message = this.emptyMessage;
 		}
@@ -108,11 +109,16 @@ export default class GitOps {
 		// git commit ... --author="Some Author Name <Some-Author-Name@fake.wikipedia.org>"
 		
 		// base string
-		let name = history.author.toString().trim();
+		let name = history.author.trim();
 		// remove special characters
-		name = name.replace(/[-="'@<>+]/g, ' ');
+		name = name.replaceAll(/[-="'@<>+]/g, ' ').replaceAll(/ +/g, ' ').trim();
+		// anon fallback
+		if (!name.length) {
+			console.warn('[WARNING] Author for rev %d (%s) is missing (removed?). Replacing with %s.', history.id, history.dt, this.emptyAuthor);
+			name = this.emptyAuthor;
+		}
 		// mail-name
-		let mail = name.replace(/\s/g, '-');
+		let mail = name.replaceAll(/\s/g, '-');
 		// final
 		let arg = `--author="${name} <${mail}@${this.fakeDomain}>"`;
 		return arg;

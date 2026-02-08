@@ -8,12 +8,23 @@ export default class HistoryEntry {
 	 */
 	constructor(revision) {
 		/** @type {String} */
-		this.dt = revision.timestamp;
+		this.dt = String(revision?.timestamp ?? '');
 		/** @type {String} */
-		this.author = revision.user.name;
+		this.author = String(revision?.user?.name ?? '');
 		/** @type {Number} */
-		this.id = revision.id;
+		this.id = Number(revision?.id ?? 0);
 		/** @type {String} */
-		this.message = revision.comment;
+		this.message = String(revision?.comment ?? '');
+	}
+
+	static recreate(entry) {
+		let me = new HistoryEntry({});
+
+		me.dt = String(entry.dt ?? '');
+		me.author = String(entry.author ?? '');
+		me.id = Number(entry.id ?? 0);
+		me.message = String(entry.message ?? '');
+
+		return me;
 	}
 }
