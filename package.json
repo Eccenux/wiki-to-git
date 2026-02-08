@@ -1,6 +1,6 @@
 {
   "name": "wiki-to-git",
-  "version": "1.1.3",
+  "version": "1.2.0",
   "description": "Node.js tool that helps to download Mediwiki page history and push it to a Git repository.",
   "type": "module",
   "main": "src/main.js",
@@ -14,7 +14,15 @@
     "mocha": "10.x"
   },
   "scripts": {
-	"test-load": "npx wiki2git-load --site meta.wikimedia.org -p \"User:Nux/global.js\" -l 2",
+	"test-full--info": "Load and commit test.",
+	"test-full": "node test-commit.js",
+
+	"test-full-download--info": "The ~/common.js contains removed data",
+	"test-full-download": "npx wiki2git-load --site pl.wikipedia.org -p \"Wikipedysta:Nux/common.js\" -j history-full-common.priv.json ",
+
+	"test-mini-download--info": "Load global that uses wikiploy; limited to last 2 revisions",
+	"test-mini-download": "npx wiki2git-load --site meta.wikimedia.org -p \"User:Nux/global.js\" -l 2",
+
     "test": "mocha"
   },
   "bin": {
