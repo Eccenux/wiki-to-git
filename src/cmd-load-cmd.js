@@ -18,12 +18,12 @@ program
 	.usage('-s <site> -p <page> [options]')
 	.description(`Download page history from a MediaWiki site.
 
-		Loads metadata from a wiki site and save this to a history json.
+		Loads metadata from a wiki site and saves it to a history JSON file.
 
 		Examples of valid syntax:
 		wiki2git-load -s en.wikipedia.org -p "User:Nux/monobook.js"
 		wiki2git-load -s "en.wikipedia.org" -p "User:Nux/monobook.js"
-		wiki2git-load --site en.wikipedia.org --p "User:Nux/monobook.js"
+		wiki2git-load --site en.wikipedia.org -p "User:Nux/monobook.js"
 		wiki2git-load --site en.wikipedia.org --page "User:Nux/monobook.js"
 
 		Required options: ${helper.requiredOptions.join(', ')}.
@@ -31,7 +31,7 @@ program
 	.option('-s, --site <site>', `MediaWiki site domain (e.g. 'en.wikipedia.org').`)
 	.option('-p, --page <page>', 'Page to download (title with namespace).')
 	.option('-j, --json <fileName>', `Optional JSON file name for history data (default: 'history.json').`)
-	.option('-l, --limit <number>', `Optional limit of revisions to download from top (default: no limit).`)
+	.option('-l, --limit <number>', `Optional limit of revisions to download from the top (default: no limit).`)
 	.parse(process.argv);
 
 const options = program.opts();
