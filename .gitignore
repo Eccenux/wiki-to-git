@@ -1,5 +1,8 @@
 /node_modules
-/*.lnk
+*.lnk
+*.priv.*
+*.priv
+.priv
 temp.*
 /repo
 history.json
