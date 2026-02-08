@@ -18,6 +18,9 @@ export class CmdHelper {
 			// note that all options are expected to be a string
 			if (typeof options[key] != 'string') {
 				console.error('[ERROR] Required option is missing:', key, '\n');
+				// console.info('Note! Use --help (or -h) for a longer description.\n');
+				// this.program.description('');
+				this.program.description('Note! Use --help (or -h) for a longer description.');
 				this.program.help();
 			}
 		}

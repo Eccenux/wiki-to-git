@@ -29,7 +29,6 @@ program
 
 		Required options: ${helper.requiredOptions.join(', ')}.
 	`.replaceAll(/\n\t{2}/g, '\n').trim())
-	.description('')
 	.option('-s, --site <site>', `MediaWiki site domain (e.g. 'en.wikipedia.org').`)
 	.option('-r, --repo <dirName>', 'Git repository name (new or existing subdirectory).')
 	.option('-o, --output <fileName>', 'Output file name (new JS/CSS file in the git repo).')
