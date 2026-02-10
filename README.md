@@ -2,9 +2,9 @@ Wiki to Git
 ==========================
 <img align="right" width="150" height="150" src="https://raw.githubusercontent.com/Eccenux/wiki-to-git/main/assets/wiki-to-git-logo.svg">
 
-**Wiki To Git** is a tool that helps to download MediaWiki page history and push it to a Git repository.
+**Wiki To Git** is a tool that downloads MediaWiki page history and push it to a Git repository. It is meant to be used for downloading [CSS and JS of gadgets](https://en.wikipedia.org/wiki/Wikipedia:Gadget), but you can also use it on [Lua modules](https://en.wikipedia.org/wiki/Wikipedia:Lua) code and such.
 
-You can used it to export things like a Wikipedia gadget to some Git server (e.g. GitHub or GitLab or Gitea). Or just export your user script to Git and work on it locally. The history of the Git repo will preserve authors and original messages (original description of changes). Essentially each edit becomes a commit.
+You can use it to export things like a Wikipedia gadget to some Git server (e.g., GitHub, GitLab, or Gitea). Or just export your user script to Git and work on it locally. The history of the Git repo will preserve authors and original messages (original descriptions of changes). Essentially, each edit becomes a commit.
 
 Once done, you can start using external tools to edit and analyze the history of the gadget. You can use [Wikiploy](https://github.com/Eccenux/Wikiploy) to deploy your gadget back to Wikipedia. Testing your code will also be easier with things like [Mocha](https://mochajs.org/#installation)/[Chai](https://www.chaijs.com/api/assert/). You can also use build tools like [Browserify](https://browserify.org/) or [Webpack](https://webpack.js.org/).
 
