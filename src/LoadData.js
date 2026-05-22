@@ -130,13 +130,50 @@ export class LoadData {
 			throw 'You must set site (or origin) to load revsion content.';
 		}
 		let url = `${this.origin}/w/rest.php/v1/revision/${id}`;
-		const response = await fetch(url);
-		const data = await response.json();
+		const data = await this.fetchWithRetry(url);
 
 		if (this.debug)
 			console.log('loadRev: ', data.timestamp, data.page.title, data.user.name);
 
 		return data.source;
+	}
+
+	/**
+	 * Fetch wikimedia API with retries.
+	 * @private
+	 * @param {string} url WMF site url.
+	 * @param {number} retries [5].
+	 * @returns 
+	 */
+	async fetchWithRetry(url, retries = 5) {
+		for (let attempt = 0; attempt <= retries; attempt++) {
+			const response = await fetch(url, {
+				headers: new Headers( {
+					'User-Agent': 'Wiki2Git/1.4 (wikipedia:pl; User:Nux)'
+				} )
+			});
+
+			if (response.status !== 429) {
+				if (!response.ok) {
+					throw new Error(`HTTP ${response.status}`);
+				}
+
+				return response.json();
+			}
+
+			// Retry-After is in seconds
+			let retryAfterHeader = response.headers.get('Retry-After');
+			let retryAfter = Number(retryAfterHeader) || 5;
+			retryAfter += (attempt * 2);
+
+			console.warn(`Rate limited. Waiting ${retryAfter}s...`);
+
+			await new Promise(resolve => {
+				setTimeout(resolve, retryAfter * 1000);
+			});
+		}
+
+		throw new Error('Too many retries');
 	}
 
 	/**
