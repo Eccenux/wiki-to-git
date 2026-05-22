@@ -6,7 +6,7 @@ Wiki to Git
 
 You can use it to export things like a Wikipedia gadget to some Git server (e.g., GitHub, GitLab, or Gitea). Or just export your user script to Git and work on it locally. The history of the Git repo will preserve authors and original messages (original descriptions of changes). Essentially, each edit becomes a commit.
 
-Once done, you can start using external tools to edit and analyze the history of the gadget. You can use [Wikiploy](https://github.com/Eccenux/Wikiploy) to deploy your gadget back to Wikipedia. Testing your code will also be easier with things like [Mocha](https://mochajs.org/#installation)/[Chai](https://www.chaijs.com/api/assert/). You can also use build tools like [Browserify](https://browserify.org/) or [Webpack](https://webpack.js.org/).
+Once done, you can start using external tools to edit and analyze the history of the gadget. You can use [Wikiploy](https://github.com/Eccenux/Wikiploy) to deploy your gadget back to Wikipedia. Testing your code will also be easier with things like [Mocha](https://mochajs.org/#installation)/[Chai](https://www.chaijs.com/api/assert/) or [Vitest](https://vitest.dev/guide/). You can also use build tools like [Browserify](https://browserify.org/) or [Webpack](https://webpack.js.org/).
 
 ## Using tools
 

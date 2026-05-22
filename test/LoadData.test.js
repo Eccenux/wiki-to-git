@@ -1,5 +1,4 @@
-/* global describe, it */
-import { assert } from 'chai';
+import { describe, it, assert } from "vitest";
 import { LoadData } from '../src/LoadData.js';
 
 describe('LoadData', function () {
